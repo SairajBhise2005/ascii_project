@@ -30,41 +30,48 @@ def frame_to_ascii(frame):
 
 # Start webcam
 cap = cv2.VideoCapture(0)
+show_ascii = True
 
 while True:
     ret, frame = cap.read()
     if not ret:
         break
 
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    if show_ascii:
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    small_frame = resize_frame(gray)
+        small_frame = resize_frame(gray)
 
-    ascii_frame = frame_to_ascii(small_frame)
+        ascii_frame = frame_to_ascii(small_frame)
 
-    # Create black canvas
-    canvas_height = len(ascii_frame) * CHAR_HEIGHT
-    canvas_width = len(ascii_frame[0]) * CHAR_WIDTH
-    ascii_canvas = np.zeros((canvas_height, canvas_width, 3), dtype=np.uint8)
+        # Create black canvas
+        canvas_height = len(ascii_frame) * CHAR_HEIGHT
+        canvas_width = len(ascii_frame[0]) * CHAR_WIDTH
+        ascii_canvas = np.zeros((canvas_height, canvas_width, 3), dtype=np.uint8)
 
-    # Draw ASCII text
-    for i, row in enumerate(ascii_frame):
-        for j, char in enumerate(row):
-            cv2.putText(
-                ascii_canvas,
-                char,
-                (j * CHAR_WIDTH, (i + 1) * CHAR_HEIGHT),
-                FONT,
-                FONT_SCALE,
-                (255, 255, 255),
-                THICKNESS,
-                cv2.LINE_AA,
-            )
+        # Draw ASCII text
+        for i, row in enumerate(ascii_frame):
+            for j, char in enumerate(row):
+                cv2.putText(
+                    ascii_canvas,
+                    char,
+                    (j * CHAR_WIDTH, (i + 1) * CHAR_HEIGHT),
+                    FONT,
+                    FONT_SCALE,
+                    (255, 255, 255),
+                    THICKNESS,
+                    cv2.LINE_AA,
+                )
 
-    cv2.imshow("ASCII Camera", ascii_canvas)
+        cv2.imshow("ASCII Camera", ascii_canvas)
+    else:
+        cv2.imshow("ASCII Camera", frame)
 
-    if cv2.waitKey(1) & 0xFF == ord("q"):
+    key = cv2.waitKey(1) & 0xFF
+    if key == ord("q"):
         break
+    elif key == ord("t"):
+        show_ascii = not show_ascii
 
 cap.release()
 cv2.destroyAllWindows()

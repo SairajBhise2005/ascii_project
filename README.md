@@ -31,7 +31,8 @@ This project is a real-time ASCII art generator that uses your webcam feed. It c
     ```
 
 2.  **Controls**:
-    - The application will open a window titled "ASCII Camera" displaying the live ASCII feed.
+    - The application will open a window titled "ASCII Camera".
+    - Press **`t`** to toggle between the ASCII art view and the original webcam feed.
     - Press **`q`** on your keyboard to quit the application and close the window.
 
 ## How It Works
